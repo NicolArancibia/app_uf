@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta UF por Año</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div style="display: flex; justify-content: flex-end; padding: 10px 20px;">
+        <button onclick="toggleMode()" style="
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        ">
+            🌗 Cambiar a modo claro/oscuro
+        </button>
+    </div>
+    
+    <h1>Consulta datos de la UF</h1>
+
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: red; font-size: 18px; font-weight: bold; text-align: center; list-style: none; padding: 0;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Formulario -->
+    <form method="post">
+        <label for="year">Ingresa el año a consultar:</label>
+        <input type="text" name="year" required>
+        <button type="submit">Consultar</button>
+    </form>
+
+    {% if datos %}
+        {% if mensaje_aviso %}
+            <p style="color: orange; font-weight: bold; text-align: center;">{{ mensaje_aviso }}</p>
+        {% endif %}
+
+        <h2 style="text-align: center;">Resultados</h2>
+
+        <div class="tabla-container">
+            <!-- Meses que subieron -->
+            <h3>Meses que subió el valor de la UF</h3>
+            {% if datos['subida'] %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Variación (UF)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mes, variacion in datos['subida'] %}
+                            <tr>
+                                <td>{{ NOMBRES_MESES[mes] }}</td>
+                                <td>{{ variacion|round(2) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">No hubo meses con subida del valor de la UF.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+
+            <!-- Meses que bajaron -->
+            <h3>Meses que bajó el valor de la UF</h3>
+            {% if datos['bajada'] %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Variación (UF)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mes, variacion in datos['bajada'] %}
+                            <tr>
+                                <td>{{ NOMBRES_MESES[mes] }}</td>
+                                <td>{{ variacion|round(2) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">No hubo meses con bajada del valor de la UF.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+
+            <!-- Meses sin variación -->
+            <h3>Meses sin variación de la UF</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if datos['sin_cambio'] %}
+                        {% for mes in datos['sin_cambio'] %}
+                            <tr>
+                                <td>{{ NOMBRES_MESES[mes] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td style="text-align: center;">No hubo meses sin variación del valor de la UF.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <!-- Día con mayor y menor valor -->
+            <h3>Resumen de valores UF</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Valor (UF)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Día con mayor valor de UF</td>
+                        <td>{{ datos['maximo'][1].strftime('%d-%m-%Y') }}</td>
+                        <td>{{ datos['maximo'][0]|round(2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Día con menor valor de UF</td>
+                        <td>{{ datos['minimo'][1].strftime('%d-%m-%Y') }}</td>
+                        <td>{{ datos['minimo'][0]|round(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const current = body.classList.contains("light-mode");
+            if (current) {
+                body.classList.remove("light-mode");
+                localStorage.setItem("modo", "oscuro");
+            } else {
+                body.classList.add("light-mode");
+                localStorage.setItem("modo", "claro");
+            }
+        }
+        
+        // Cargar modo desde localStorage
+        window.onload = () => {
+            const modoGuardado = localStorage.getItem("modo");
+            if (modoGuardado === "claro") {
+                document.body.classList.add("light-mode");
+            }
+        };
+        </script>
+        
+</body>
+</html>

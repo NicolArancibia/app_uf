@@ -1,0 +1,106 @@
+/* MODO OSCURO (por defecto) */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: #90caf9;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1769aa;
+}
+
+/* Tabla */
+.tabla-container {
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #263238;
+    color: #90caf9;
+}
+
+.mensaje-centrado {
+    text-align: center;
+    font-style: italic;
+    color: #aaa;
+    margin-top: 10px;
+}
+
+/* MODO CLARO */
+body.light-mode {
+    background-color: #f4f6f8;
+    color: #222;
+}
+
+body.light-mode input[type="text"] {
+    background-color: white;
+    color: #000;
+    border: 1px solid #ccc;
+}
+
+body.light-mode table {
+    background-color: white;
+    color: #222;
+}
+
+body.light-mode th {
+    background-color: #e3f2fd;
+    color: #0a74da;
+}
+
+body.light-mode .mensaje-centrado {
+    color: #555;
+}
+
+@media screen and (max-width: 600px) {
+    table, th, td {
+        font-size: 14px;
+    }
+}
