@@ -73,3 +73,5 @@ Notas adicionales
 
 - La API Key integrada en el proyecto es funcional para efectos de esta prueba técnica.
 - La API gratuita de la CMF puede tener restricciones en cuanto a la frecuencia de uso o disponibilidad de datos actualizados.
+- Favor no usar mucho la api key sino se me acabará :D
+
